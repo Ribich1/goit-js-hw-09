@@ -49,7 +49,31 @@ const options = {
 
 flatpickr("#datetime-picker", options);
 
+refs.btn.addEventListener('click', onTimerStart);
 
+function onTimerStart() {
+    clearInterval(timer);
+    timer = setInterval(handleTime, 1000);
+    refs.input.disabled = true;
+    refs.btn.disabled = true;
+
+};
+
+function handleTime() {
+    const now = new Date();
+    const timeDifference = selectedDate - now;
+    const { days, hours, minutes, seconds } = convertMs(timeDifference);
+   
+    const stopWatch = `${days}:${hours}:${minutes}:${seconds}`;
+    if (stopWatch === '00:00:00:00') {
+        clearInterval(timer);
+    };
+
+    refs.day.textContent = days;
+    refs.hours.textContent = hours;
+    refs.minutes.textContent = minutes;
+    refs.seconds.textContent = seconds;
+}
 
 
 
