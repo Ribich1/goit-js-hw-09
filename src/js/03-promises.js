@@ -15,7 +15,11 @@ function handleSubmit(event) {
   let delay = Number(refs.firstDelayEl.value);
   const step = Number(refs.delayStepEl.value);
   const amount = Number(refs.amountEl.value);
-  
+  if (delay < 0 || step < 0 || amount <= 0) {
+    Notiflix.Notify.warning(`Please input correct data`);
+    refs.form.reset();
+    return;
+  }
   for (let i = 1; i <= amount; i += 1) {
     const position = i;
    createPromise(position, delay)

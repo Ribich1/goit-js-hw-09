@@ -6,21 +6,23 @@ import "flatpickr/dist/flatpickr.min.css";
 
 const refs = {
   input: document.getElementById('datetime-picker'),
-  btn: document.querySelector('button'),
+  btn: document.querySelector('button[data-start]'),
   day: document.querySelector('[data-days]'),
   hours: document.querySelector('[data-hours]'),
   minutes: document.querySelector('[data-minutes]'),
-  seconds: document.querySelector('[data-seconds]'),
+    seconds: document.querySelector('[data-seconds]'),
+  btnReset: document.querySelector('button[data-reset]')
 };
 
 refs.input.addEventListener(
     'input',
     e => {
         const selectedDate = new Date('e.currentTarget.value');
-        console.log("selectedDate", selectedDate);
-        
+        console.log("selectedDate", selectedDate);       
     }
 );
+refs.btn.addEventListener('click', onTimerStart);  
+refs.btnReset.addEventListener('click', onResetTimer);
 
 const currentTime = new Date();
 let selectedDate;
@@ -49,9 +51,13 @@ const options = {
 
 flatpickr("#datetime-picker", options);
 
-refs.btn.addEventListener('click', onTimerStart);
+
 
 function onTimerStart() {
+    if (refs.input.value === "") {
+        alert('Please choose a date in the future');
+        return;
+    }
     clearInterval(timer);
     timer = setInterval(handleTime, 1000);
     refs.input.disabled = true;
@@ -62,11 +68,17 @@ function onTimerStart() {
 function handleTime() {
     const now = new Date();
     const timeDifference = selectedDate - now;
+    if (timeDifference <= 0) {
+        alert('Please choose a date in the future');
+        clearInterval(timer);
+        return;
+    }
     const { days, hours, minutes, seconds } = convertMs(timeDifference);
    
     const stopWatch = `${days}:${hours}:${minutes}:${seconds}`;
     if (stopWatch === '00:00:00:00') {
         clearInterval(timer);
+        return;
     };
 
     refs.day.textContent = days;
@@ -98,4 +110,15 @@ function convertMs(ms) {
 
 function addLeadingZero(value) {
   return String(value).padStart(2, '0');
+}
+
+function onResetTimer() {
+       clearInterval(timer);
+    refs.input.disabled = false;
+    refs.btn.disabled = false;
+    refs.day.textContent = "";
+    refs.hours.textContent = "";
+    refs.minutes.textContent ="";
+    refs.seconds.textContent = "";
+    refs.input.value="";
 }
