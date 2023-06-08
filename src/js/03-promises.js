@@ -12,6 +12,7 @@ refs.form.addEventListener('submit', handleSubmit);
 
 function handleSubmit(event) {
   event.preventDefault();
+  
   let delay = Number(refs.firstDelayEl.value);
   const step = Number(refs.delayStepEl.value);
   const amount = Number(refs.amountEl.value);
@@ -30,8 +31,9 @@ function handleSubmit(event) {
     Notiflix.Notify.warning(`❌ Rejected promise ${position} in ${delay}ms`);
   }); 
     delay += step;
-  }
-  refs.form.reset();
+  };
+   refs.form.reset();
+ 
   
 }
 
