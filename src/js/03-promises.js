@@ -31,6 +31,7 @@ function handleSubmit(event) {
   }); 
     delay += step;
   }
+  refs.form.reset();
   
 }
 
