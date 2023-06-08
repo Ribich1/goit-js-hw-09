@@ -76,15 +76,17 @@ function handleTime() {
     const { days, hours, minutes, seconds } = convertMs(timeDifference);
    
     const stopWatch = `${days}:${hours}:${minutes}:${seconds}`;
-    if (stopWatch === '00:00:00:00') {
-        clearInterval(timer);
-        return;
-    };
+
 
     refs.day.textContent = days;
     refs.hours.textContent = hours;
     refs.minutes.textContent = minutes;
     refs.seconds.textContent = seconds;
+  
+  if (stopWatch === '00:00:00:00') {
+        clearInterval(timer);
+        return;
+    };
 }
 
 
